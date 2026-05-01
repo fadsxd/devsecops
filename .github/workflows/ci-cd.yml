@@ -1,0 +1,29 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repo
+        uses: actions/checkout@v3
+
+      - name: Instalar Docker
+        run: sudo apt-get update
+
+      - name: Build app
+        run: docker build -t devops-app ./app
+
+      - name: Scan con Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devops-app'
+          exit-code: '1'
+          severity: 'CRITICAL'
+
+      - name: Deploy local
+        run: docker-compose up -d
