@@ -26,4 +26,4 @@ jobs:
           severity: 'CRITICAL'
 
       - name: Deploy local
-        run: docker-compose up -d
+        run: docker compose up -d
